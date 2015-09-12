@@ -2012,8 +2012,11 @@ let env_updates ~opamswitch ?(force_path=false) t =
     (if force_path then "+=" else "=+="),
     OpamFilename.Dir.to_string add_to_path in
   let perl5 = OpamPackage.Name.of_string "perl5" in
+  let pkgconfig = OpamPackage.Name.of_string "pkgconfig" in
   let add_to_perl5lib =  OpamPath.Switch.lib t.root t.switch t.switch_config perl5 in
   let new_perl5lib = "PERL5LIB", "+=", OpamFilename.Dir.to_string add_to_perl5lib in
+  let new_pkgconfig_path = "PKG_CONFIG_PATH", "=",
+    OpamFilename.Dir.to_string (OpamPath.Switch.lib t.root t.switch t.switch_config pkgconfig) in
   let toplevel_dir =
     "OCAML_TOPLEVEL_PATH", "=",
     OpamFilename.Dir.to_string (OpamPath.Switch.toplevel t.root t.switch t.switch_config) in
@@ -2038,7 +2041,7 @@ let env_updates ~opamswitch ?(force_path=false) t =
     then [ "OPAMROOT", "=", current_string ]
     else []
   in
-  new_path :: toplevel_dir :: new_perl5lib ::
+  new_path :: toplevel_dir :: new_perl5lib :: new_pkgconfig_path ::
   (man_path @ switch @ root @ comp_env)
 
 (* This function is used by 'opam config env' and 'opam switch' to
