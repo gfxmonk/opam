@@ -21,7 +21,7 @@ build: [
   [make "%{name}%.install"]
 ]
 depends: [
-  "opam-state" {= "2.0.0~beta4"}
+  "opam-state" {= "2.0.0~beta3"} # XXX temporary, for passe build
   "cmdliner" {>= "0.9.8"}
   "jbuilder" {build & >= "1.0+beta12"}
 ]
